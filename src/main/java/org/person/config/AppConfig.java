@@ -5,9 +5,11 @@ import java.util.Properties;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
+import org.person.aop.PersonAspect;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -25,11 +27,18 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @EnableWebMvc
 @ComponentScan(value = "org.person")
 @EnableTransactionManagement
+
+@EnableAspectJAutoProxy(proxyTargetClass=true)
 public class AppConfig extends WebMvcConfigurerAdapter {
 
 	public AppConfig() {
 	}
 
+	@Bean
+	public PersonAspect personAspect() {
+		return new PersonAspect();
+	}
+	
 	@Override
 	public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
 		configurer.favorPathExtension(false);
